@@ -1,13 +1,13 @@
 <?php
 
 
+use App\Http\Controllers\HostController;
+use App\Http\Controllers\ServerController;
 use Illuminate\Support\Facades\Route;
 use ivampiresp\Cocoa\Http\AdminController;
 use ivampiresp\Cocoa\Http\DeviceController;
-use ivampiresp\Cocoa\Http\HostController;
 use ivampiresp\Cocoa\Http\IndexController;
 use ivampiresp\Cocoa\Http\ReplyController;
-use ivampiresp\Cocoa\Http\ServerController;
 use ivampiresp\Cocoa\Http\UserController;
 use ivampiresp\Cocoa\Http\WorkOrderController;
 
