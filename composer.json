@@ -1,0 +1,30 @@
+{
+    "name": "ivampiresp/cocoa",
+    "description": "LAE Module",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "ivampiresp\\Cocoa\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "iVampireSP.com",
+            "email": "im@ivampiresp.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ivampiresp\\Cocoa\\CocoaServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.0",
+        "laravel/framework": "^8.67|^9.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
