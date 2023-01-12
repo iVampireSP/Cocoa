@@ -2,29 +2,33 @@
 
 namespace ivampiresp\Cocoa\Http\Remote;
 
+use App\Http\Controllers\Remote\ServerStatusController;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use ivampiresp\Cocoa\Http\Controller;
 use ivampiresp\Cocoa\Models\Admin;
-use ivampiresp\Cocoa\Models\Server;
 
 // use Illuminate\Http\Request;
 
 class RemoteController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $data = [
             'remote' => [
                 'name' => config('remote.module_id'),
-            ],
-            'servers' => Server::all()->toArray()
+            ]
         ];
+
+        $servers = (new ServerStatusController())->index();
+
+        $data['servers'] = $servers;
 
         return $this->success($data);
     }
 
-    public function login()
+    public function login(): JsonResponse
     {
         $admin = Admin::first();
 
