@@ -17,7 +17,7 @@ Route::post('/login', [IndexController::class, 'login']);
 
 // 登入后的路由
 Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin'], function () {
-    Route::get('/', [IndexController::class, 'index'])->name('index');
+    Route::get('/', [IndexController::class, 'index'])->name('earnings');
 
     Route::resource('users', UserController::class);
     Route::resource('servers', ServerController::class);
