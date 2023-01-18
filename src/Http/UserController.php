@@ -2,11 +2,10 @@
 
 namespace ivampiresp\Cocoa\Http;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use ivampiresp\Cocoa\Http\Controller;
 use ivampiresp\Cocoa\Models\Host;
+use ivampiresp\Cocoa\Models\User;
 use ivampiresp\Cocoa\Models\WorkOrder\WorkOrder;
 
 class UserController extends Controller
