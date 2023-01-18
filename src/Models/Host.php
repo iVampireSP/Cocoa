@@ -3,20 +3,15 @@
 namespace ivampiresp\Cocoa\Models;
 
 use App\Actions\HostAction;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Http;
 use ivampiresp\Cocoa\Models\WorkOrder\WorkOrder;
 
 class Host extends Model
 {
-    use HasFactory;
-
-    public mixed $user_id;
-    public mixed $price;
-    public mixed $host_id;
-    public mixed $id;
     protected $table = 'hosts';
 
     protected $fillable = [
@@ -32,14 +27,16 @@ class Host extends Model
     protected $casts = [
         'configuration' => 'array',
         'suspended_at' => 'datetime',
+        'price' => 'decimal:2',
+        'managed_price' => 'decimal:2',
     ];
 
     protected static function boot()
     {
         parent::boot();
-        static::creating(function ($model) {
-            $http = Http::remote('remote')->asForm();
-            // if id exists
+        static::creating(function (self $model) {
+            $http = Http::remote()->asForm();
+
             if ($model->where('id', $model->id)->exists()) {
                 return false;
             }
@@ -49,7 +46,7 @@ class Host extends Model
             }
 
             if ($model->user_id === null) {
-                $model->user_id = auth('user')->id();
+                $model->user_id = auth('api')->id();
             }
 
             // 云端 Host 应该在给 Model 创建数据之前被创建。
@@ -58,12 +55,14 @@ class Host extends Model
             $http->patch('/hosts/' . $model->host_id, [
                 'price' => $model->price
             ]);
+
+            return true;
         });
 
         // update
-        static::updating(function ($model) {
-            $http = Http::remote('remote')->asForm();
+        static::updating(function (self $model) {
 
+            $http = Http::remote()->asForm();
 
             if ($model->status == 'suspended') {
                 $model->suspended_at = now();
@@ -75,6 +74,8 @@ class Host extends Model
 
             if ($model->isDirty('price')) {
                 $pending['price'] = $model->price;
+            } else {
+                $pending['price'] = $model->calcPrice();
             }
 
             if ($model->isDirty('managed_price')) {
@@ -95,10 +96,8 @@ class Host extends Model
         });
 
 
-        static::updated(function ($model) {
+        static::updated(function (self $model) {
             if ($model->isDirty('status')) {
-                $pending['status'] = $model->status;
-
                 $hostAction = new HostAction();
 
                 // 如果方法在 hostAction 中存在，就调用它。
@@ -109,40 +108,35 @@ class Host extends Model
         });
     }
 
-    // scope thisUser
 
-    public function calcPrice()
+    public function calcPrice(): string
     {
+        // 价格计算机会在主机创建和更新时被调用。
+        // 你可以自定义价格计算器，但是请切记，使用 bcmath 函数来计算价格，价格必须是字符串类型。
+        $price = "0";
 
-        // 你可以自定义价格计算器。
+        /* 以下都是例子，请根据自己的需要来。 */
+        // 加法
+        $price = bcadd($price, "1", 2);
+        // 除法
+        $price = bcdiv($price, "2", 2);
+        // 乘法
+        $price = bcmul($price, "2", 2);
 
-        // $this->load('location');
-        $price = 0;
-        // $price += $this->location->price;
-        // $price += ($this->cpu_limit / 100) * $this->location->cpu_price;
-        // $price += ($this->memory) *
-        //     $this->location->memory_price;
-        // $price += ($this->disk / 1024) *
-        //     $this->location->disk_price;
-        // $price += $this->backups *
-        //     $this->location->backup_price;
-        // $price += $this->allocations *
-        //     $this->location->allocation_price;
-        // $price += $this->databases *
-        //     $this->location->database_price;
+        // 判断是否为 0
+        if (bccomp($price, "0", 2) === 0) {
+            // 如果为 0，就返回 0.01
+            return "0.01";
+        }
+        /* 以上都是例子，请根据自己的需要来。 */
 
         return $price;
     }
 
-
-    // user
-
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'host_id';
     }
-
-    // workOrders
 
     public function scopeThisUser($query, $user_id = null)
     {
@@ -150,14 +144,12 @@ class Host extends Model
         return $query->where('user_id', $user_id);
     }
 
-    // scope
-
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function workOrders()
+    public function workOrders(): HasMany
     {
         return $this->hasMany(WorkOrder::class);
     }
@@ -167,7 +159,7 @@ class Host extends Model
         return $query->where('status', 'running')->where('price', '!=', 0);
     }
 
-    public function getPrice()
+    public function getPrice(): string
     {
         return $this->managed_price ?? $this->price;
     }
