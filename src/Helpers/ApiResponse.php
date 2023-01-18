@@ -11,8 +11,6 @@ trait ApiResponse
         return $this->error($message, 404);
     }
 
-    // success
-
     public function error($message = '', $code = 400): JsonResponse
     {
         return $this->apiResponse(['message' => $message], $code);
