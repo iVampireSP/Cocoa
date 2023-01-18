@@ -2,6 +2,7 @@
 
 namespace ivampiresp\Cocoa\Http\Remote;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use ivampiresp\Cocoa\Http\Controller;
 use ivampiresp\Cocoa\Models\Host;
@@ -14,14 +15,13 @@ class HostController extends Controller
      * 如果返回 404，莱云则判断主机不存在，会发起删除请求。
      * 一般情况下，只需要返回主机数据即可。
      */
-    public function show(Host $host)
+    public function show(Host $host): JsonResponse
     {
         return $this->success($host);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
-        //
         $host = Host::where('host_id', $request->route('host'))->firstOrFail();
 
         $host->update($request->all());
@@ -29,17 +29,12 @@ class HostController extends Controller
         return $this->updated($host);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request): JsonResponse
     {
-        // 如果你想要拥有自己的一套删除逻辑，可以不处理这个。返回 false 即可。
-        // return false;
-
         $host = Host::where('host_id', $request->route('host'))->firstOrFail();
 
-
-        // 或者执行 Functions/HostController.php 中的 destroy 方法。
-
-        $HostController = new \ivampiresp\Cocoa\Http\Remote\Functions\HostController();
+        $HostController = new \App\Http\Controllers\Api\HostController();
+        $HostController->destroy($host);
 
         return $HostController->destroy($host);
     }
