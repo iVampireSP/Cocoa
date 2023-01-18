@@ -5,7 +5,7 @@ namespace ivampiresp\Cocoa\Http\Remote;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use ivampiresp\Cocoa\Http\Controller;
-use ivampiresp\Cocoa\Models\Host;
+use App\Models\Host;
 
 class HostController extends Controller
 {
