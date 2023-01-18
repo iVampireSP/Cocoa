@@ -2,13 +2,10 @@
 
 namespace ivampiresp\Cocoa\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Ip extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'ip',
         'mac',
@@ -24,7 +21,7 @@ class Ip extends Model
     ];
 
     // 路由模型绑定
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'ip_host_id';
     }
