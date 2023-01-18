@@ -2,11 +2,14 @@
 
 namespace ivampiresp\Cocoa;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use ivampiresp\Cocoa\Commands\ChangePassword;
 use ivampiresp\Cocoa\Commands\CreateAdmin;
+use ivampiresp\Cocoa\Models\User;
 
 class CocoaServiceProvider extends ServiceProvider
 {
@@ -40,7 +43,7 @@ class CocoaServiceProvider extends ServiceProvider
         }
 
         Http::macro('remote', function () {
-            return Http::withoutVerifying()->withToken(config('cocoa.api_token'))->baseUrl(config('cocoa.url'))->acceptJson();
+            return Http::withToken(config('cocoa.api_token'))->baseUrl(config('cocoa.url'))->acceptJson();
         });
 
         $this->publishes([
@@ -49,7 +52,6 @@ class CocoaServiceProvider extends ServiceProvider
         ]);
 
         $this->loadViewsFrom(__DIR__ . '/views', 'Cocoa');
-
 
 
         Route::middleware(['remote'])
@@ -61,6 +63,26 @@ class CocoaServiceProvider extends ServiceProvider
             ->group(__DIR__ . '/../routes/web.php');
 
 
+        $this->app['auth']->viaRequest('lae', function (Request $request) {
+            $token = $request->bearerToken();
 
+            return Cache::remember('user_token:' . $token, 60, function () use ($token) {
+                $http = Http::remote();
+
+                $user = $http->get('/token/' . $token);
+
+                if (!$user->successful()) {
+                    return false;
+                }
+
+                return (new User)->firstOrCreate([
+                    'id' => $user['id'],
+                    'name' => $user['name'],
+                    'email' => $user['email'],
+                ]);
+            });
+
+
+        });
     }
 }
