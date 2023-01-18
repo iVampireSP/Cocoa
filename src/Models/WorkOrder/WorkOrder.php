@@ -2,19 +2,16 @@
 
 namespace ivampiresp\Cocoa\Models\WorkOrder;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use ivampiresp\Cocoa\Models\Host;
+use ivampiresp\Cocoa\Models\User;
 
 class WorkOrder extends Model
 {
-    use HasFactory;
-
     public $incrementing = false;
-    public mixed $user;
-    public mixed $id;
-    public mixed $status;
     protected $table = 'work_orders';
     protected $fillable = [
         'id',
@@ -27,38 +24,29 @@ class WorkOrder extends Model
         'updated_at',
     ];
 
-    // 取消自动管理 timestamp
-    // public $timestamps = false;
-
-
-    // replies
-
     protected static function boot()
     {
         parent::boot();
         static::creating(function ($model) {
-            // if id exists
             if ($model->where('id', $model->id)->exists()) {
                 return false;
             }
+
+            return true;
         });
     }
 
-    // host
-
-    public function replies()
+    public function replies(): HasMany
     {
         return $this->hasMany(Reply::class);
     }
 
-    public function host()
+    public function host(): BelongsTo
     {
         return $this->belongsTo(Host::class);
     }
 
-    // on createing
-
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
