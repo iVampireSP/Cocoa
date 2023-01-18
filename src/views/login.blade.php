@@ -1,21 +1,32 @@
 <x-app-layout>
-    <div>
-        <h1>登录</h1>
+    <h1>管理员登录</h1>
 
-        <form action="{{ route('login') }}" method="POST">
-            @csrf
+    <form action="{{ route('login') }}" method="POST">
+        @csrf
 
-            <input type="text" name="email" placeholder="邮箱">
-            <input type="password" name="password" placeholder="密码">
+        <div class="form-group">
+            <label for="email" class="text-left ml-0">邮箱</label>
+            <input type="email" name="email" id="email" class="form-control mb-3" required autofocus>
+        </div>
 
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input type="password" id="password" name="password"
+                   class="form-control rounded-right" required>
+        </div>
 
-            <div class="mt-3">
-                <input type="checkbox" name="remember" id="remember">
-                <label for="remember">记住我</label>
-
-                <br/>
-                <button type="submit" class="btn btn-primary">登录</button>
+        <div class="form-group mt-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="remember" checked>
+                <label class="form-check-label" for="remember">
+                    记住登录
+                </label>
             </div>
-        </form>
-    </div>
+        </div>
+
+        <button class="btn btn-primary btn-block mt-3" type="submit">
+            登录
+        </button>
+    </form>
+
 </x-app-layout>
