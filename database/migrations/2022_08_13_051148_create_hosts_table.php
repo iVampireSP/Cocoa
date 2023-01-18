@@ -10,7 +10,7 @@ return new class extends Migration {
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('hosts', function (Blueprint $table) {
             $table->id();
@@ -26,10 +26,8 @@ return new class extends Migration {
             // host_id
             $table->unsignedBigInteger('host_id')->index();
 
-            // price
-            $table->double('price', 60, 8)->index();
-
-            $table->double('managed_price', 60, 8)->index()->nullable();
+            $table->decimal('price', 10)->index()->default("0.00");
+            $table->decimal('managed_price', 10)->index()->nullable();
 
             // config
             $table->json('configuration')->nullable();
@@ -48,7 +46,7 @@ return new class extends Migration {
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('hosts');
     }
