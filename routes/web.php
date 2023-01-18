@@ -11,12 +11,13 @@ use ivampiresp\Cocoa\Http\ReplyController;
 use ivampiresp\Cocoa\Http\UserController;
 use ivampiresp\Cocoa\Http\WorkOrderController;
 
+Route::view('/', 'index');
 Route::get('/login', [IndexController::class, 'index'])->name('login');
 Route::post('/login', [IndexController::class, 'login']);
 
 
 // 登入后的路由
-Route::group(['middleware' => 'auth:web'], function () {
+Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin'], function () {
     Route::get('/', [IndexController::class, 'index'])->name('index');
 
     Route::resource('users', UserController::class);
