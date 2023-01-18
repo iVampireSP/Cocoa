@@ -31,7 +31,7 @@ class RemoteRequest
         }
 
         $token = $request->header('X-Module-Api-Token');
-        if ($token !== config('remote.api_token')) {
+        if ($token !== config('cocoa.api_token')) {
             return $this->unauthorized();
         }
 
@@ -50,7 +50,7 @@ class RemoteRequest
                 ]);
             }
 
-            Auth::guard('user')->login($user);
+            Auth::guard('api')->login($user);
         }
 
         return $next($request);

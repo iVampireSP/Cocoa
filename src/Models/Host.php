@@ -139,7 +139,7 @@ class Host extends Model
 
     public function scopeThisUser($query, $user_id = null)
     {
-        $user_id = $user_id ?? request('user_id');
+        $user_id = $user_id ?? auth('api')->id();
         return $query->where('user_id', $user_id);
     }
 
