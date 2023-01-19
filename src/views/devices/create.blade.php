@@ -10,8 +10,8 @@
             <span class="input-group-text">{{ config('cocoa.module_id') }}.</span>
             <input type="text" class="form-control" id="name" name="name" placeholder="名称" aria-label="设备名称" required/>
         </div>
-        <span class="form-text text-muted">登录 MQTT 时的用户名，比如 {{ config('remote.module_id') }}.device_name。其中
-            {{ config('remote.module_id') }} 是模块 ID, device_name 是上面输入的名字。</span>
+        <span class="form-text text-muted">登录 MQTT 时的用户名，比如 {{ config('cocoa.module_id') }}.device_name。其中
+            {{ config('cocoa.module_id') }} 是模块 ID, device_name 是上面输入的名字。</span>
 
         <div class="form-group mt-1">
             <label for="password">密码</label>
