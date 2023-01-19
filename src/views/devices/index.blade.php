@@ -4,6 +4,8 @@
     <h3>设备</h3>
     <p>设备可以用来连接到 莱云 的 MQTT 网络。</p>
     <a href="{{ route('devices.create') }}">新设备</a>
+    <a href="{{ route('mqtt.online') }}">在线设备</a>
+
     <div class="overflow-auto">
         <table class="table table-hover">
             <thead>
@@ -14,7 +16,6 @@
 
             <tbody>
             @foreach ($devices as $device)
-                {{-- {{ dd($device) }} --}}
                 <tr>
                     <td>
                         <a href="{{ route('devices.edit', $device) }}">

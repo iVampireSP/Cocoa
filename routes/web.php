@@ -32,5 +32,9 @@ Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin'], function () {
     Route::post('devices/{device}/allows', [DeviceController::class, 'store_allow'])->name('devices.allows.store');
     Route::delete('devices/allows/{allow}', [DeviceController::class, 'allow_destroy'])->name('devices.allows.destroy');
 
+    Route::get('mqtt', [DeviceController::class, 'online'])->name('mqtt.online');
+    Route::delete('mqtt', [DeviceController::class, 'online_destroy'])->name('mqtt.kick');
+
+
     Route::post('/logout', [IndexController::class, 'logout'])->name('logout');
 });

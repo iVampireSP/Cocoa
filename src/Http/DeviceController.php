@@ -5,6 +5,7 @@ namespace ivampiresp\Cocoa\Http;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
 use ivampiresp\Cocoa\Models\Device;
 use ivampiresp\Cocoa\Models\DeviceAllow;
@@ -177,5 +178,29 @@ class DeviceController extends Controller
         DeviceAllow::find($allow)->delete();
 
         return back()->with('success', '设备权限删除成功。');
+    }
+
+    public function online(Request $request): View
+    {
+        $page = $request->input('page', 1);
+        $clients = $this->http->get('devices', [
+            'page' => $page,
+        ])->json();
+
+        $clients = new LengthAwarePaginator($clients['data'], $clients['total'], $clients['per_page'], $page, [
+            'path' => route('mqtt.online'),
+        ]);
+
+        return view('Cocoa::devices.online', compact('clients'));
+    }
+
+    public function online_destroy(Request $request): RedirectResponse
+    {
+        $this->http->delete('devices', [
+            'client_id' => $request->input('client_id'),
+            'name' => $request->input('name'),
+        ]);
+
+        return back()->with('success', '设备下线成功。');
     }
 }
