@@ -2,7 +2,7 @@
 
 <x-app-layout>
     <h3>物联设备</h3>
-    <p>这里列出了当前连接到 MQTT 的设备。</p>
+    <p>这里列出了当前连接到 MQTT 的设备，不包含模块本身的连接。</p>
 
     <table class="table table-hover">
         <thead>
@@ -33,7 +33,7 @@
         </thead>
         <tbody>
 
-        @foreach($clients as $c)
+        @foreach($clients['data'] as $c)
             <tr>
                 <td>
                     {{ $c['clientid'] }}
@@ -92,6 +92,24 @@
         </tbody>
     </table>
 
-    {{ $clients->links() }}
+    {{-- 分页，只有上一页和下一页 --}}
+    <div class="d-flex justify-content-center">
+        <div>
+            @if ($clients['current_page'] > 1)
+                <a href="?page={{ $clients['current_page'] - 1 }}" class="btn btn-primary">上一页</a>
+            @endif
+        </div>
+        <div style="width: 10px">
+
+        </div>
+        <div>
+            @if (count($clients['data']) > 0)
+                <a href="?page={{ $clients['current_page'] + 1 }}" class="btn btn-primary">下一页</a>
+            @endif
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mt-2">
+        <small class="text-muted">此页面无法计算出确切的页码</small>
+    </div>
 
 </x-app-layout>

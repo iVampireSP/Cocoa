@@ -5,7 +5,7 @@ namespace ivampiresp\Cocoa\Http;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\View\View;
 use ivampiresp\Cocoa\Models\Device;
 use ivampiresp\Cocoa\Models\DeviceAllow;
@@ -186,10 +186,6 @@ class DeviceController extends Controller
         $clients = $this->http->get('devices', [
             'page' => $page,
         ])->json();
-
-        $clients = new LengthAwarePaginator($clients['data'], $clients['total'], $clients['per_page'], $page, [
-            'path' => route('mqtt.online'),
-        ]);
 
         return view('Cocoa::devices.online', compact('clients'));
     }
