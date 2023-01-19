@@ -23,7 +23,8 @@
     },
     "require": {
         "php": "^8.0",
-        "laravel/framework": "^8.67|^9.0"
+        "laravel/framework": "^8.67|^9.0",
+        "genealabs/laravel-model-caching": "^0.12.5"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
