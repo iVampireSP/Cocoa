@@ -2,6 +2,7 @@
 
 namespace ivampiresp\Cocoa\Http\Remote;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use ivampiresp\Cocoa\Http\Controller;
 use ivampiresp\Cocoa\Models\Device;
@@ -9,7 +10,7 @@ use ivampiresp\Cocoa\Models\DeviceAllow;
 
 class MqttController extends Controller
 {
-    public function authentication(Request $request)
+    public function authentication(Request $request): JsonResponse
     {
         $client_id = $request->input('client_id');
         $device_id = $request->input('device_id');
@@ -23,7 +24,7 @@ class MqttController extends Controller
 
         if ($device->client_id) {
             if ($device->client_id != $client_id) {
-                return $this->forbidden('客户端 ID 不匹配', 403);
+                return $this->forbidden('客户端 ID 不匹配');
             }
         }
 
@@ -33,10 +34,10 @@ class MqttController extends Controller
             ]);
         }
 
-        return $this->forbidden('用户名或密码错误', 401);
+        return $this->forbidden('用户名或密码错误');
     }
 
-    public function authorization(Request $request)
+    public function authorization(Request $request): JsonResponse
     {
         $device_id = $request->input('device_id');
 
@@ -47,17 +48,12 @@ class MqttController extends Controller
         $device = Device::where('name', $device_id)->first();
 
         if (!$device) {
-            return $this->notFound('设备不存在', 404);
+            return $this->notFound('设备不存在');
         }
 
         $device_allows = DeviceAllow::where('device_id', $device->id)
             ->where('type', $type)
             ->get();
-
-        // Log::debug("message", [
-        //     'device_allows' => $device_allows,
-        //     'topic' => $topic,
-        // ]);
 
         foreach ($device_allows as $device_allow) {
 
@@ -68,7 +64,7 @@ class MqttController extends Controller
                 //     'device_allow' => $device_allow->toArray(),
                 // ]);
                 if ($device_allow->action == 'deny') {
-                    return $this->forbidden('禁止订阅', 403);
+                    return $this->forbidden('禁止订阅');
                 }
             }
 
@@ -91,6 +87,6 @@ class MqttController extends Controller
         }
 
 
-        return $this->forbidden('禁止访问', 403);
+        return $this->forbidden('禁止访问');
     }
 }
