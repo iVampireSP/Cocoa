@@ -53,11 +53,7 @@ class RemoteRequest
             Auth::guard('api')->login($user);
         }
 
-        $response = $next($request);
-
-        $response->header('X-Module-Api-Token', $token);
-
-        return $response;
+        return $next($request);
     }
 
     public function unauthorized(): JsonResponse
