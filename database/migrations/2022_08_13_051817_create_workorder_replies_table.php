@@ -13,7 +13,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('work_order_replies', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id')->index();
 
             // content
             $table->text('content');

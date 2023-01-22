@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::dropIfExists('users');
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id')->index();
 
             // $table->unsignedBigInteger('remote_id')->index()->comment('Remote User ID');
 
