@@ -17,10 +17,11 @@ class Reply extends Model
         'content',
         'work_order_id',
         'user_id',
+        'role',
+        'name',
         'is_pending',
         'created_at',
         'updated_at',
-        'role'
     ];
 
     // public $timestamps = false;
