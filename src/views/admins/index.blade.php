@@ -9,7 +9,8 @@
         <table class="table table-hover">
             <thead>
             <th>ID</th>
-            <th>邮件</th>
+            <th>名称</th>
+            <th>邮箱</th>
             <th>操作</th>
             </thead>
 
@@ -20,6 +21,9 @@
                         <a href="{{ route('admins.edit', $admin) }}">
                             {{ $admin->id }}
                         </a>
+                    </td>
+                    <td>
+                        {{ $admin->name }}
                     </td>
                     <td>
                         {{ $admin->email }}

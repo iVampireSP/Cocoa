@@ -84,6 +84,7 @@ class AdminController extends Controller
     {
         $request->validate([
             'email' => 'required|email|unique:admins,email,' . $admin->id,
+            'name' => 'required|string|max:20',
         ]);
 
         $msg = '管理员信息更新成功';
@@ -99,6 +100,7 @@ class AdminController extends Controller
 
         $msg .= '。';
 
+        $admin->name = $request->name;
         $admin->email = $request->email;
 
         $admin->save();
