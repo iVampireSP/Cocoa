@@ -52,7 +52,7 @@ class IndexController extends Controller
         // attempt to login
         if (Auth::guard('admin')->attempt($request->only(['email', 'password']), $request->has('remember'))) {
             // if success, redirect to home
-            return redirect()->intended();
+            return redirect()->route('earnings');
         } else {
             // if failed, redirect to log in with error message
             return redirect()->back()->withErrors(['message' => '用户名或密码错误'])->withInput();
