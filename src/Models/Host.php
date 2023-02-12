@@ -21,6 +21,8 @@ class Host extends Model
         'price',
         'managed_price',
         'status',
+        'billing_cycle',
+        'next_due_at',
     ];
 
     protected $casts = [

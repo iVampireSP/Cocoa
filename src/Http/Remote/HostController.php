@@ -2,10 +2,11 @@
 
 namespace ivampiresp\Cocoa\Http\Remote;
 
+use App\Actions\HostAction;
+use App\Models\Host;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use ivampiresp\Cocoa\Http\Controller;
-use App\Models\Host;
 
 class HostController extends Controller
 {
@@ -37,5 +38,16 @@ class HostController extends Controller
         $HostController->destroy($host);
 
         return $HostController->destroy($host);
+    }
+
+    public function calculate(Request $request): JsonResponse
+    {
+        $hostAction = new HostAction();
+
+        $price = $hostAction->calculatePrice($request->all());
+
+        return $this->success([
+            'price' => $price,
+        ]);
     }
 }

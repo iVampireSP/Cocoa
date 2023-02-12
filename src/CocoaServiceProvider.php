@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use ivampiresp\Cocoa\Commands\ChangePassword;
 use ivampiresp\Cocoa\Commands\CreateAdmin;
+use ivampiresp\Cocoa\Http\Remote\HostController;
 use ivampiresp\Cocoa\Models\User;
 
 class CocoaServiceProvider extends ServiceProvider
@@ -58,6 +59,13 @@ class CocoaServiceProvider extends ServiceProvider
             ->prefix('remote')
             ->as('remote.')
             ->group(__DIR__ . '/../routes/remote.php');
+
+        Route::middleware(['api', 'remote'])
+            ->prefix('remote/functions')
+            ->as('api.')
+            ->group(function () {
+                Route::match(['get', 'post'], 'calculate', [HostController::class, 'calculate']);
+            });
 
         Route::middleware(['web'])
             ->group(__DIR__ . '/../routes/web.php');

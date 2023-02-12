@@ -9,6 +9,7 @@
 
 use Illuminate\Support\Facades\Route;
 use ivampiresp\Cocoa\Http\Remote;
+use ivampiresp\Cocoa\Http\Remote\HostController;
 
 Route::get('/remote', [Remote\RemoteController::class, 'index']);
 Route::post('/fast-login', [Remote\RemoteController::class, 'login']);
@@ -16,6 +17,7 @@ Route::post('/fast-login', [Remote\RemoteController::class, 'login']);
 Route::apiResource('work-orders', Remote\WorkOrder\WorkOrderController::class);
 Route::apiResource('work-orders.replies', Remote\WorkOrder\ReplyController::class);
 Route::apiResource('hosts', Remote\HostController::class)->only(['show', 'update', 'destroy']);
+Route::match(['get', 'post'], 'calculate', [HostController::class, 'calculate']);
 
 // MQTT 部分
 // 登录
