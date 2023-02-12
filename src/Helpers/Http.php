@@ -14,7 +14,7 @@ trait Http
         $this->http = \Illuminate\Support\Facades\Http::withToken(config('cocoa.api_token'))->baseUrl(config('cocoa.url'))->acceptJson();
     }
 
-    public function getOrCreateUser($user_id): array
+    public function getOrCreateUser($user_id): array|User
     {
         $user = (new User)->where('id', $user_id)->first();
         // if user null
