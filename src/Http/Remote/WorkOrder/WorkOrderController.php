@@ -4,7 +4,9 @@ namespace ivampiresp\Cocoa\Http\Remote\WorkOrder;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use ivampiresp\Cocoa\Http\Controller;
+use ivampiresp\Cocoa\Models\User;
 use ivampiresp\Cocoa\Models\WorkOrder\WorkOrder;
 
 class WorkOrderController extends Controller
@@ -18,6 +20,7 @@ class WorkOrderController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $this->getOrCreateUser($request->input('user_id'));
 
         $req = $request->all();
 
@@ -36,6 +39,8 @@ class WorkOrderController extends Controller
      */
     public function update(Request $request, WorkOrder $work_order): JsonResponse
     {
+        $this->getOrCreateUser($request->input('user_id'));
+
         $req = $request->all();
 
         // if ($request->filled('host_id')) {
