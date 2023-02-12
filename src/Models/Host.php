@@ -43,7 +43,7 @@ class Host extends Model
             }
 
             if ($model->price === null) {
-                $model->price = $model->calcPrice();
+                $model->price = $model->calcPrice($this);
             }
 
             if ($model->user_id === null) {
@@ -76,7 +76,7 @@ class Host extends Model
             if ($model->isDirty('price')) {
                 $pending['price'] = $model->price;
             } else {
-                $pending['price'] = $model->calcPrice();
+                $pending['price'] = $model->calcPrice($this);
             }
 
             if ($model->isDirty('managed_price')) {
@@ -109,9 +109,9 @@ class Host extends Model
         });
     }
 
-    protected function calcPrice(): string
+    protected function calcPrice(self $host): string
     {
-        return (new HostAction())->calculatePrice($this->toArray());
+        return (new HostAction())->calculatePrice($host->toArray());
     }
 
     public function getRouteKeyName(): string
