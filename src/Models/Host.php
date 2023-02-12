@@ -28,6 +28,7 @@ class Host extends Model
     protected $casts = [
         'configuration' => 'array',
         'suspended_at' => 'datetime',
+        'next_due_at' => 'datetime',
         'price' => 'decimal:2',
         'managed_price' => 'decimal:2',
     ];
@@ -43,7 +44,7 @@ class Host extends Model
             }
 
             if ($model->price === null) {
-                $model->price = $model->calcPrice($this);
+                $model->price = $model->calcPrice($model);
             }
 
             if ($model->user_id === null) {
@@ -76,7 +77,7 @@ class Host extends Model
             if ($model->isDirty('price')) {
                 $pending['price'] = $model->price;
             } else {
-                $pending['price'] = $model->calcPrice($this);
+                $pending['price'] = $model->calcPrice($model);
             }
 
             if ($model->isDirty('managed_price')) {
