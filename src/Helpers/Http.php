@@ -19,8 +19,7 @@ trait Http
         $user = (new User)->where('id', $user_id)->first();
         // if user null
         if (!$user) {
-            $http = Http::remote()->asForm();
-            $user = $http->get('/users/' . $user_id)->json();
+            $user = $this->http->get('/users/' . $user_id)->json();
 
             (new User)->create([
                 'id' => $user['id'],
