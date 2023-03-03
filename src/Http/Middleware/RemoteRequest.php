@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use ivampiresp\Cocoa\Models\User;
+use App\Models\User;
 
 class RemoteRequest
 {

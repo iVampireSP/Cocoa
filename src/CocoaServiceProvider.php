@@ -10,7 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use ivampiresp\Cocoa\Commands\ChangePassword;
 use ivampiresp\Cocoa\Commands\CreateAdmin;
 use ivampiresp\Cocoa\Http\Remote\HostController;
-use ivampiresp\Cocoa\Models\User;
+use App\Models\User;
 
 class CocoaServiceProvider extends ServiceProvider
 {
