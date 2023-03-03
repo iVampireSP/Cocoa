@@ -2,6 +2,7 @@
 
 namespace ivampiresp\Cocoa\Helpers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 
 trait ApiResponse
@@ -65,9 +66,13 @@ trait ApiResponse
         return $this->success($message, 204);
     }
 
-    public function updated($message = 'Updated'): JsonResponse
+    public function updated(mixed $message = 'Updated'): JsonResponse
     {
-        return $this->success($message, 200);
+        if ($message instanceof Model) {
+            $message = $message->getChanges();
+        }
+
+        return $this->success($message);
     }
 
     public function deleted($message = 'Deleted'): JsonResponse
