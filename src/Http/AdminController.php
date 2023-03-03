@@ -25,8 +25,7 @@ class AdminController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return RedirectResponse
      */
     public function store(Request $request): RedirectResponse
@@ -47,7 +46,7 @@ class AdminController extends Controller
             'password' => bcrypt($password),
         ]);
 
-        return redirect()->route('Cocoa::admins.edit', $admin)->with('success', '管理员创建成功，密码为：' . $password . '。');
+        return redirect()->route('Cocoa::admins.edit', $admin)->with('success', '管理员创建成功，密码为：'.$password.'。');
     }
 
     /**
@@ -63,8 +62,7 @@ class AdminController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Admin $admin
-     *
+     * @param  Admin  $admin
      * @return View
      */
     public function edit(Admin $admin): View
@@ -75,15 +73,14 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Admin   $admin
-     *
+     * @param  Request  $request
+     * @param  Admin  $admin
      * @return RedirectResponse
      */
     public function update(Request $request, Admin $admin): RedirectResponse
     {
         $request->validate([
-            'email' => 'required|email|unique:admins,email,' . $admin->id,
+            'email' => 'required|email|unique:admins,email,'.$admin->id,
             'name' => 'required|string|max:20',
         ]);
 
@@ -93,7 +90,7 @@ class AdminController extends Controller
             // 随机密码
             $password = Str::random();
 
-            $msg .= '，新的密码为：' . $password;
+            $msg .= '，新的密码为：'.$password;
 
             $admin->password = bcrypt($password);
         }
@@ -111,8 +108,7 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Admin $admin
-     *
+     * @param  Admin  $admin
      * @return RedirectResponse
      */
     public function destroy(Admin $admin): RedirectResponse
