@@ -5,7 +5,6 @@ namespace ivampiresp\Cocoa\Http;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Pagination\Paginator;
 use Illuminate\View\View;
 use ivampiresp\Cocoa\Models\Device;
 use ivampiresp\Cocoa\Models\DeviceAllow;
@@ -27,8 +26,7 @@ class DeviceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return RedirectResponse|Response
      */
     public function store(Request $request): Response|RedirectResponse
@@ -57,8 +55,7 @@ class DeviceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Device $device
-     *
+     * @param  Device  $device
      * @return RedirectResponse
      */
     public function show(Device $device): RedirectResponse
@@ -69,8 +66,7 @@ class DeviceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Device $device
-     *
+     * @param  Device  $device
      * @return View
      */
     public function edit(Device $device): View
@@ -81,9 +77,8 @@ class DeviceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Device  $device
-     *
+     * @param  Request  $request
+     * @param  Device  $device
      * @return RedirectResponse
      */
     public function update(Request $request, Device $device): RedirectResponse
@@ -92,7 +87,6 @@ class DeviceController extends Controller
             'password' => 'required|min:8|max:32',
             'client_id' => 'nullable',
         ]);
-
 
         // 检测 name 重复
         if ($request->input('name') != $device->name) {
@@ -112,8 +106,7 @@ class DeviceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Device $device
-     *
+     * @param  Device  $device
      * @return RedirectResponse
      */
     public function destroy(Device $device): RedirectResponse
@@ -122,7 +115,6 @@ class DeviceController extends Controller
 
         return redirect()->route('devices.index')->with('success', '设备删除成功。');
     }
-
 
     public function allows(Device $device): View
     {
@@ -136,9 +128,8 @@ class DeviceController extends Controller
         $request->validate([
             'topic' => 'required',
             'action' => 'required|in:allow,deny',
-            'type' => 'required|in:subscribe,publish'
+            'type' => 'required|in:subscribe,publish',
         ]);
-
 
         // 检测冲突
         $conflict = DeviceAllow::where('device_id', $device->id)
@@ -165,7 +156,7 @@ class DeviceController extends Controller
             'device_id' => $device->id,
             'topic' => $request->topic,
             'action' => $request->action,
-            'type' => $request->type
+            'type' => $request->type,
         ]);
 
         return redirect()->route('devices.allows.index', $device)->with('success', '设备权限创建成功。');

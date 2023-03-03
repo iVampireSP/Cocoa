@@ -16,12 +16,12 @@ class IndexController extends Controller
     public function index(Request $request): View|RedirectResponse
     {
         if ($request->filled('fast_login_token')) {
-            $admin = Cache::get('fast_login_' . $request->input('fast_login_token'));
+            $admin = Cache::get('fast_login_'.$request->input('fast_login_token'));
 
             if ($admin) {
                 Auth::guard('admin')->login($admin, true);
 
-                Cache::forget('fast_login_' . $request->input('fast_login_token'));
+                Cache::forget('fast_login_'.$request->input('fast_login_token'));
 
                 return redirect()->route('index')->with('success', '您已从 莱云 面板登录。');
             } else {
@@ -33,7 +33,7 @@ class IndexController extends Controller
         }
 
         // if not login, redirect to log in
-        if (!Auth::guard('admin')->check()) {
+        if (! Auth::guard('admin')->check()) {
             return view('Cocoa::login');
         } else {
             $modules = $this->http->get('modules');

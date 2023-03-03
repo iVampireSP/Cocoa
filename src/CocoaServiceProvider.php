@@ -22,7 +22,7 @@ class CocoaServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/cocoa.php',
+            __DIR__.'/../config/cocoa.php',
             'cocoa'
         );
     }
@@ -35,7 +35,7 @@ class CocoaServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
             $this->commands([
                 ChangePassword::class,
@@ -49,16 +49,15 @@ class CocoaServiceProvider extends ServiceProvider
 
         $this->publishes([
             // __DIR__ . '/views' => base_path('resources/views/vendor/cocoa'),
-            __DIR__ . '/../config/cocoa.php' => $this->app->configPath('cocoa.php'),
+            __DIR__.'/../config/cocoa.php' => $this->app->configPath('cocoa.php'),
         ]);
 
-        $this->loadViewsFrom(__DIR__ . '/views', 'Cocoa');
-
+        $this->loadViewsFrom(__DIR__.'/views', 'Cocoa');
 
         Route::middleware(['remote'])
             ->prefix('remote')
             ->as('remote.')
-            ->group(__DIR__ . '/../routes/remote.php');
+            ->group(__DIR__.'/../routes/remote.php');
 
         Route::middleware(['api', 'remote'])
             ->prefix('remote/functions')
@@ -68,18 +67,17 @@ class CocoaServiceProvider extends ServiceProvider
             });
 
         Route::middleware(['web'])
-            ->group(__DIR__ . '/../routes/web.php');
-
+            ->group(__DIR__.'/../routes/web.php');
 
         $this->app['auth']->viaRequest('lae', function (Request $request) {
             $token = $request->bearerToken();
 
-            return Cache::remember('user_token:' . $token, 60, function () use ($token) {
+            return Cache::remember('user_token:'.$token, 60, function () use ($token) {
                 $http = Http::remote();
 
-                $user = $http->get('/token/' . $token);
+                $user = $http->get('/token/'.$token);
 
-                if (!$user->successful()) {
+                if (! $user->successful()) {
                     return false;
                 }
 
@@ -89,8 +87,6 @@ class CocoaServiceProvider extends ServiceProvider
                     'email' => $user['email'],
                 ]);
             });
-
-
         });
     }
 }

@@ -18,7 +18,7 @@ class RemoteController extends Controller
         $data = [
             'remote' => [
                 'name' => config('remote.module_id'),
-            ]
+            ],
         ];
 
         $servers = (new ServerStatusController())->index();
@@ -32,16 +32,16 @@ class RemoteController extends Controller
     {
         $admin = Admin::first();
 
-        if (!$admin) {
+        if (! $admin) {
             return $this->error('管理员不存在');
         }
 
         $str = Str::random(60);
-        Cache::put('fast_login_' . $str, $admin, 60);
+        Cache::put('fast_login_'.$str, $admin, 60);
 
         return $this->created([
             'token' => $str,
-            'url' => route('login', ['fast_login_token' => $str])
+            'url' => route('login', ['fast_login_token' => $str]),
         ]);
     }
 }

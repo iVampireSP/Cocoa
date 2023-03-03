@@ -16,17 +16,15 @@ class RemoteRequest
     /**
      * Handle an incoming request.
      *
-     * @param Request                                       $request
+     * @param  Request  $request
      * @param Closure(Request): (Response|RedirectResponse) $next
-     *
      * @return Response|JsonResponse|RedirectResponse
      */
     public function handle(Request $request, Closure $next): Response|JsonResponse|RedirectResponse
     {
-
         // add json header
         $request->headers->set('Accept', 'application/json');
-        if (!$request->hasHeader('X-Module-Api-Token')) {
+        if (! $request->hasHeader('X-Module-Api-Token')) {
             return $this->unauthorized();
         }
 
@@ -39,9 +37,9 @@ class RemoteRequest
         if ($request->header('X-User-Id')) {
             $user = (new User)->where('id', $request->header('X-User-Id'))->first();
             // if user null
-            if (!$user) {
+            if (! $user) {
                 $http = Http::remote()->asForm();
-                $user = $http->get('/users/' . $request->header('X-User-Id'))->json();
+                $user = $http->get('/users/'.$request->header('X-User-Id'))->json();
 
                 $user = (new User)->create([
                     'id' => $user['id'],
@@ -59,7 +57,7 @@ class RemoteRequest
     public function unauthorized(): JsonResponse
     {
         return response()->json([
-            'message' => 'Unauthorized.'
+            'message' => 'Unauthorized.',
         ], 401);
     }
 }

@@ -13,8 +13,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return View
      */
     public function index(Request $request): View
@@ -26,7 +25,7 @@ class UserController extends Controller
                 continue;
             }
             if ($request->{$key}) {
-                $users = $users->where($key, 'LIKE', '%' . $value . '%');
+                $users = $users->where($key, 'LIKE', '%'.$value.'%');
             }
         }
 
@@ -37,12 +36,10 @@ class UserController extends Controller
         return view('Cocoa::users.index', ['users' => $users, 'count' => $count]);
     }
 
-
     /**
      * Display the specified resource.
      *
-     * @param User $user
-     *
+     * @param  User  $user
      * @return View
      */
     public function show(User $user): View

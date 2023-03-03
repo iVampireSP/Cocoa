@@ -56,6 +56,7 @@ class CreateAdmin extends Command
         ]);
 
         $this->info('管理员创建成功！');
+
         return 0;
     }
 }

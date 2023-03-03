@@ -5,7 +5,6 @@ namespace ivampiresp\Cocoa\Http;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Routing\Controller as BaseController;
 use ivampiresp\Cocoa\Helpers\ApiResponse;
 use ivampiresp\Cocoa\Helpers\Http;

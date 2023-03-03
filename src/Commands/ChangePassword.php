@@ -31,8 +31,9 @@ class ChangePassword extends Command
         $email = $this->ask('请输入邮箱');
 
         $admin = Admin::where('email', $email)->first();
-        if (!$admin) {
+        if (! $admin) {
             $this->error('用户不存在');
+
             return 1;
         }
 
@@ -41,7 +42,6 @@ class ChangePassword extends Command
         $admin->save();
 
         $this->info('密码修改成功');
-
 
         return 0;
     }

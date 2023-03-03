@@ -4,9 +4,7 @@ namespace ivampiresp\Cocoa\Http\Remote\WorkOrder;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use ivampiresp\Cocoa\Http\Controller;
-use ivampiresp\Cocoa\Models\User;
 use ivampiresp\Cocoa\Models\WorkOrder\WorkOrder;
 
 class WorkOrderController extends Controller
@@ -14,8 +12,7 @@ class WorkOrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
@@ -32,9 +29,8 @@ class WorkOrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request   $request
-     * @param WorkOrder $work_order
-     *
+     * @param  Request  $request
+     * @param  WorkOrder  $work_order
      * @return JsonResponse
      */
     public function update(Request $request, WorkOrder $work_order): JsonResponse
@@ -58,8 +54,7 @@ class WorkOrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param WorkOrder $work_order
-     *
+     * @param  WorkOrder  $work_order
      * @return JsonResponse
      */
     public function destroy(WorkOrder $work_order): JsonResponse

@@ -54,8 +54,8 @@ class Host extends Model
             // 云端 Host 应该在给 Model 创建数据之前被创建。
 
             // 云端 Host 创建后，再到这里计算价格。
-            $http->patch('/hosts/' . $model->host_id, [
-                'price' => $model->price
+            $http->patch('/hosts/'.$model->host_id, [
+                'price' => $model->price,
             ]);
 
             return true;
@@ -63,12 +63,11 @@ class Host extends Model
 
         // update
         static::updating(function (self $model) {
-
             $http = Http::remote()->asForm();
 
             if ($model->status == 'suspended') {
                 $model->suspended_at = now();
-            } else if ($model->status == 'running') {
+            } elseif ($model->status == 'running') {
                 $model->suspended_at = null;
             }
 
@@ -93,10 +92,9 @@ class Host extends Model
             }
 
             if (count($pending) > 0) {
-                $http->patch('/hosts/' . $model->host_id, $pending);
+                $http->patch('/hosts/'.$model->host_id, $pending);
             }
         });
-
 
         static::updated(function (self $model) {
             if ($model->isDirty('status')) {
@@ -123,6 +121,7 @@ class Host extends Model
     public function scopeThisUser($query, $user_id = null)
     {
         $user_id = $user_id ?? auth('api')->id();
+
         return $query->where('user_id', $user_id);
     }
 

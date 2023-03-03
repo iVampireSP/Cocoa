@@ -18,8 +18,8 @@ trait Http
     {
         $user = (new User)->where('id', $user_id)->first();
         // if user null
-        if (!$user) {
-            $user = $this->http->get('/users/' . $user_id)->json();
+        if (! $user) {
+            $user = $this->http->get('/users/'.$user_id)->json();
 
             (new User)->create([
                 'id' => $user['id'],

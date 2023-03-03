@@ -18,7 +18,7 @@ class MqttController extends Controller
 
         $device = Device::where('name', $device_id)->first();
 
-        if (!$device) {
+        if (! $device) {
             return $this->notFound('No device found');
         }
 
@@ -47,7 +47,7 @@ class MqttController extends Controller
 
         $device = Device::where('name', $device_id)->first();
 
-        if (!$device) {
+        if (! $device) {
             return $this->notFound('设备不存在');
         }
 
@@ -56,7 +56,6 @@ class MqttController extends Controller
             ->get();
 
         foreach ($device_allows as $device_allow) {
-
             // 先精确匹配
             if ($device_allow->topic == $topic) {
                 // Log::info('精确匹配', [
@@ -85,7 +84,6 @@ class MqttController extends Controller
                 ]);
             }
         }
-
 
         return $this->forbidden('禁止访问');
     }

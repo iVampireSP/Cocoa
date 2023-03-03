@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Device extends Model
 {
     use Cachable;
+
     public $fillable = [
         'name',
         'password',
